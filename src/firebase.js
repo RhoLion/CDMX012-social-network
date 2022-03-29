@@ -39,9 +39,9 @@ const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 const provider2 = new FacebookAuthProvider();
 
-const functions = require('firebase-functions');
+/*const functions = require('firebase-functions');
 const admin = require('firebase-admin');
-admin.initializeApp();
+admin.initializeApp();*/
 
 export const signInFunct = (email, pass) => {
   createUserWithEmailAndPassword(auth, email, pass)
@@ -76,7 +76,9 @@ export const saveForm = (name, email, password) => {
 export const savePost = ( Description, date, like) => {
   onAuthStateChanged(auth,(users) => { 
   const email = users.email;
-  addDoc(collection(db, 'posts'), { email, Description, date, like});
+  const UID = users.uid;
+  const likes = [];
+  addDoc(collection(db, 'posts'), { email, Description, date, likes, UID});
 })
 };
 
@@ -173,21 +175,19 @@ export const logOutFunct = () => {
   });
 };*/
 
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+     const uid = user.uid;
+  }
+});
+
 const data =collection(db, 'posts');
 
-const w = query(data, orderBy('date', 'desc'));
+const w = query(data, orderBy('date', 'asc'));
 export const unsubscribe = (funct) => {
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      const uid = user.uid;
-      console.log('cuenta loggeada');
-      onSnapshot(w, (snapshot) => {
-        const changes = snapshot.docChanges();
-        funct(changes);
+        onSnapshot(w, (snapshot) => {
+          const changes = snapshot.docChanges();
+          funct(changes);
       });
-    }
-  });
 };
-
-
 ////Likes//

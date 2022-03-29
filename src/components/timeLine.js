@@ -2,7 +2,7 @@
 import { onNavigate } from '../app.js';
 
 import {
-  logOutFunct, dataCall, savePost, unsubscribe,
+  logOutFunct,savePost, unsubscribe,saveLikeClicked
 } from '../firebase.js';
 
 // window.addEventListener('DOMContentLoaded', async () => {
@@ -43,25 +43,6 @@ export const TimeLine = () => {
   headerProfile.addEventListener('click', () => {
     onNavigate('/profile');
   });
-  //   console.log('ahhh');
-  //   const dropDown = document.createElement('select');
-  //   Object.assign(dropDown, {
-  //     id: 'ddMenu',
-  //     name: 'options',
-  //   });
-  //   const ddOption1 = document.createElement('option');
-  //   Object.assign(ddOption1, {
-  //     textContent: 'Ir a mi perfil',
-  //     value: 'goProfile',
-  //   });
-  //   const ddOption2 = document.createElement('option');
-  //   Object.assign(ddOption2, {
-  //     textContent: 'Cerrar sesion',
-  //     value: 'logOut',
-  //   });
-  //   dropDown.append(ddOption1, ddOption2);
-  //   headerProfile.append(dropDown);
-  // });
 
   header.append(headerProfile, headerLogo, headerInbox);
   /* Boton de cerrar sesión */
@@ -71,44 +52,6 @@ export const TimeLine = () => {
   const postContainer = document.createElement('div');
   postContainer.setAttribute('id', 'postContainer');
   document.body.appendChild(postContainer);
-
-  const setUpPost = (posts) => {
-    while (setUpPost.firstChild) {
-      setUpPost.removeChild(setUpPost.firstChild);
-    }
-
-    /// ///////////////////////////////////////////////////////////////////////////
-    posts.forEach((change) => {
-      if (change.type == 'added') {
-        // while (postList.firstChild) {
-        //   postList.removeChild(postList.lastChild);
-        // }
-        const articleContent = document.createElement('article');
-        articleContent.setAttribute('id', 'articleContent');
-
-        const titleH3 = document.createElement('h3');
-        titleH3.append(change.doc.data().Title);
-
-        const postContent = document.createElement('p');
-        Object.assign(postContent, {
-          id: 'postContent',
-          textContent: change.doc.data().Description,
-        });
-        const likeDiv = document.createElement('div');
-        likeDiv.setAttribute('id', 'likeDiv');
-        const likeB = document.createElement('img');
-        Object.assign(likeB, {
-          id: 'likeB',
-          type: 'button',
-          src: 'imagenes/paw.png',
-        });
-        likeDiv.append(likeB);
-        articleContent.append(titleH3, postContent, likeDiv);
-        postContainer.append(articleContent);
-      }
-    });
-    /// /////////////////////////////////////////////////////////////
-  };
   const newPost = document.createElement('textarea');
   Object.assign(newPost, {
     name: 'post',
@@ -127,18 +70,59 @@ export const TimeLine = () => {
     id: 'postButton',
   });
   // document.body.appendChild(postButton);
-
-  // const postList = document.getElementById('postContainer');
-
-  postContainer.append(newPost, postButton);
-  unsubscribe(setUpPost);
   postButton.addEventListener('click', () => {
     if (newPost.value != []) {
-      savePost('Usuarix', newPost.value, new Date());
+      savePost( newPost.value, new Date(), []);
     } else {
       alert('No escribiste nada!');
     }
   });
+ 
+  const setUpPost = (posts) => {
+    while (setUpPost.firstChild) {
+      setUpPost.removeChild(setUpPost.firstChild);
+    }
+    
+    posts.forEach((change) => {
+      if (change.type == 'added') {
+        // while (postList.firstChild) {
+        //   postList.removeChild(postList.lastChild);
+        // }
+        const articleContent = document.createElement('article');
+        articleContent.setAttribute('id', 'articleContent');
+        //articleContent.prepend(titleH3, postContent, likeDiv);
+
+        const titleH3 = document.createElement('h3');
+        titleH3.append(change.doc.data().email);
+
+        const postContent = document.createElement('p');
+        Object.assign(postContent, {
+          id: 'postContent',
+          textContent: change.doc.data().Description,
+        });
+        const likeDiv = document.createElement('div');
+        likeDiv.setAttribute('id', 'likeDiv');
+        const likeB = document.createElement('img');
+        Object.assign(likeB, {
+          id: 'likeB',
+          type: 'button',
+          src: 'imagenes/paw.png',
+        });
+        /*likeB.addEventListener('click', (e) =>{
+          saveLikeClicked(e)
+        })*/
+        likeDiv.appendChild(likeB);
+        articleContent.append(titleH3, postContent, likeDiv);
+        postContainer.appendChild(articleContent);
+      }
+    });
+  };
+  
+  // const postList = document.getElementById('postContainer');
+  unsubscribe(setUpPost);
+  postContainer.append(newPost, postButton);
+  
+  
 
   // ///////// FOOTER ////////////////////
   const footer = document.createElement('footer');

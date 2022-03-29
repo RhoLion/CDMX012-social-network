@@ -8,7 +8,7 @@ import {
   onSnapshot,
   query, where,
   orderBy,
-
+  
 } from 'https://www.gstatic.com/firebasejs/9.6.8/firebase-firestore.js';
 import {
   getAuth,
@@ -38,6 +38,10 @@ const auth = getAuth(app);
 
 const provider = new GoogleAuthProvider();
 const provider2 = new FacebookAuthProvider();
+
+const functions = require('firebase-functions');
+const admin = require('firebase-admin');
+admin.initializeApp();
 
 export const signInFunct = (email, pass) => {
   createUserWithEmailAndPassword(auth, email, pass)
@@ -69,8 +73,11 @@ export const saveForm = (name, email, password) => {
   addDoc(collection(db, 'users'), { name, email, password });
 };
 
-export const savePost = (Title, Description, date) => {
-  addDoc(collection(db, 'posts'), { Title, Description, date});
+export const savePost = ( Description, date, like) => {
+  onAuthStateChanged(auth,(users) => { 
+  const email = users.email;
+  addDoc(collection(db, 'posts'), { email, Description, date, like});
+})
 };
 
 // Crear cuenta con Google
@@ -159,20 +166,16 @@ export const logOutFunct = () => {
     .catch((error) => { console.log(error); });
 };
 
-export const dataCall = (callBackFn) => {
-  // console.log(user.email);
-  getDocs(collection(db, 'posts')).then((snapshot) => {
-    // const querySnapshot = await getDocs(q);
-    // querySnapshot.forEach((doc) => {
-    // console.log(snapshot.docs);
+/*export const dataCall = (callBackFn) => {
+  getDocs(collection(db, 'posts')).then((snapshot) =>   
     callBackFn(snapshot.docs);
-    // loginCheck(user);
+    
   });
-};
+};*/
 
-const q = collection(db, 'posts');
+const data =collection(db, 'posts');
 
-const w = query(q, orderBy('date', 'desc'));
+const w = query(data, orderBy('date', 'desc'));
 export const unsubscribe = (funct) => {
   onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -186,26 +189,5 @@ export const unsubscribe = (funct) => {
   });
 };
 
-export const stateChange = () => {
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      const uid = user.uid;
-      console.log('cuenta loggeada');
-    }
-  });
-};
 
-// const q = query(collection(db, 'posts'), where('Title', '==', 'Publicación')); .orderBy('data')
-// const sShot = snapshot.docChanges();
-// return sShot;
-// .forEach((change) => {
-// if (change.type === 'added') {
-//   const newestPost = change.doc.data();
-//   return newestPost;
-// }
-// if (change.type === 'modified') {
-//   console.log('Modified post: ', change.doc.data());
-// }
-// if (change.type === 'removed') {
-//   console.log('Removed post: ', change.doc.data());
-// }
+////Likes//

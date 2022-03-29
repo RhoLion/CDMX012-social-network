@@ -176,7 +176,6 @@ export const TimeLine = () => {
 
 // const loggedOutLinks = document.querySelectorAll(".loggedOut");
 // const loggedInLinks = document.querySelectorAll(".loggedIn");
-
 // export const loginCheck = (user) => {
 //   if (user) {
 //     loggedInLinks.forEach((link) => (link.style.display = 'block'));

@@ -2,6 +2,7 @@
     font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
     margin: 0;
     padding: 0;
+    margin-top: 2%;
 }
 body{
     background-color: white;
@@ -40,7 +41,7 @@ h1{
 .mailAndPass{
     background-color: #E4E3E3;
     border-radius: 30px;
-    width:120%;
+    width:85%;
     padding: 3%;
     border-color:#FFBE48;
     text-align: center;
@@ -52,9 +53,9 @@ h1{
     border: transparent;
     border-radius: 30px;
     color: whitesmoke;
-    width:95%;
+    width:85%;
     padding:5%;
-    margin-top: 10%;
+    margin-top: 5%;
 }
 #acc_creation{
     flex-direction: row;
@@ -76,6 +77,8 @@ h1{
     height: 5%;
     width: 5%;
     cursor: pointer;
+    border: pink solid;
+    
 }
 #containerLogos{
     display: flex;
@@ -174,7 +177,7 @@ header{
     display: flex;
     justify-content: center;
 }
-#likeB{
+.likeB{
     height: 10%;
     width: 10%;
 }
@@ -192,8 +195,8 @@ header{
 #newPost{
     border: 2px solid #FFBE48;
     border-radius: 10px;
-    margin-left: 10%;
-    margin-right: 10%;
+    margin-left: 8%;
+    margin-right: 20%;
 }
 
 #postButton{
@@ -201,22 +204,21 @@ header{
     border: transparent;
     border-radius: 30px;
     color:black;
-    margin-left: 10%;
+    margin-left: 33%;
     margin-right: 10%;
     margin-top: 2%;
     width: 30%;
-    align-self: center;
     
 }
 
 article{
     border: 2px solid #FFBE48;
     border-radius: 10px;
-    margin-left: 10%;
-    margin-right: 10%;
+    margin-left: 5%;
+    margin-right: 5%;
     margin-top: 5%;
     margin-bottom: 5%;
-    padding: 2%;
+    /* padding: 2%; */
 }
 
 #logo_hex{

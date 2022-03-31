@@ -1,6 +1,6 @@
 import { onNavigate } from '../app.js';
 import {
-  logOutFunct,savePost, unsubscribe,
+  savePost, unsubscribe, likeArray,
 } from '../firebase.js';
 
 export const TimeLine = () => {
@@ -31,12 +31,11 @@ export const TimeLine = () => {
   });
 
   header.append(headerProfile, headerLogo, headerInbox);
-  const wraper= document.createElement('div');
- wraper.setAttribute('id', 'wraper');
-
+  const wraper = document.createElement('div');
+  wraper.setAttribute('id', 'wraper');
 
   /* Div de las publicaciones */
-  const inputs= document.createElement('section');
+  const inputs = document.createElement('section');
   inputs.setAttribute('id', 'inputSection');
 
   const postContainer = document.createElement('div');
@@ -58,64 +57,68 @@ export const TimeLine = () => {
     value: 'Postear',
     id: 'postButton',
   });
-  
-  inputs.append(newPost,postButton);
 
+  inputs.append(newPost, postButton);
 
   const setUpPost = (posts) => {
-    
     posts.forEach((change) => {
-        const articleContent = document.createElement('article');
-        articleContent.setAttribute('id', 'articleContent');
-        
-        const titleH3 = document.createElement('h3');
-        titleH3.append (change.doc.data().email);
+      const articleContent = document.createElement('article');
+      articleContent.setAttribute('id', 'articleContent');
 
-        const postContent = document.createElement('p');
-        Object.assign(postContent, {
-          id: 'postContent',
-          textContent:change.doc.data().Description,
-        });
-        const likeDiv = document.createElement('div');
-        likeDiv.setAttribute('id', 'likeDiv');
-        const likeB = document.createElement('img');
-        Object.assign(likeB, {
-          id: 'likeB',
-          type: 'button',
-          src: 'imagenes/paw.png',
-        });
+      const titleH3 = document.createElement('h3');
+      titleH3.append(change.doc.data().email);
 
-       const uids= change.doc.data().uid;
-       console.log(uids);
-       const likes= change.doc.data().like;
-       console.log(likes);
-       if(likes == []){
-        likeB.addEventListener('click', () =>{
-          likes++;
-          console.log("like+1")
-        })
-       }   
-        likeDiv.appendChild(likeB);
-        articleContent.append(titleH3, postContent, likeDiv);
-        postContainer.insertBefore(articleContent, postContainer.firstChild);
-        
-       
+      const postContent = document.createElement('p');
+      Object.assign(postContent, {
+        id: change.doc.data().objectId,
+        textContent: change.doc.data().Description,
+      });
+      const likeDiv = document.createElement('div');
+      likeDiv.setAttribute('id', 'likeDiv');
+      const likeB = document.createElement('img');
+      Object.assign(likeB, {
+        id: 'likeb',
+        type: 'button',
+        src: 'imagenes/paw.png',
+        className: 'likeB',
+      });
+
+      let liked = false;
+      const likes = change.doc.data().likes;
+      // console.log(likes);
+      const uids = change.doc.data().UID;
+      if (likes.includes(uids)) {
+        liked = true;
+      }
+
+      likeB.addEventListener('click', (event) => {
+        if (likeB) {
+          event = change.doc.id;
+          // console.log(change.doc.id);
+          likeArray(event);
+          // console.log(likeArray);
+        } else {
+        }
+        // console.log(event);
+      });
+
+      likeDiv.appendChild(likeB);
+      articleContent.append(titleH3, postContent, likeDiv);
+      postContainer.insertBefore(articleContent, postContainer.firstChild);
     });
   };
- 
+
   unsubscribe(setUpPost);
   wraper.append(inputs, postContainer);
 
-  
   postButton.addEventListener('click', () => {
     if (newPost.value != []) {
-      savePost( newPost.value, new Date(), []);
-  
+      savePost(newPost.value, new Date(), []);
+      newPost.value = '';
     } else {
       alert('No escribiste nada!');
     }
   });
- 
 
   // ///////// FOOTER ////////////////////
   const footer = document.createElement('footer');
@@ -139,9 +142,6 @@ export const TimeLine = () => {
   });
   footer.append(homeFooter, searchFooter);
   document.body.appendChild(footer);
-  timeLineDiv.append(header,wraper, footer);
+  timeLineDiv.append(header, wraper, footer);
   return timeLineDiv;
 };
-
-
-

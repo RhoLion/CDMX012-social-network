@@ -8,7 +8,10 @@ import {
   onSnapshot,
   query, where,
   orderBy,
-  
+  updateDoc,
+  documentId,
+  arrayUnion,
+
 } from 'https://www.gstatic.com/firebasejs/9.6.8/firebase-firestore.js';
 import {
   getAuth,
@@ -21,7 +24,9 @@ import {
   signInWithRedirect,
   FacebookAuthProvider,
 } from 'https://www.gstatic.com/firebasejs/9.6.8/firebase-auth.js';
+import { onNavigate } from './app.js';
 import { impresion } from './components/signIn.js';
+// import { async } from 'regenerator-runtime';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAiKKsrEJpCx8NgpvvcNp1dykxNjEyzqe0',
@@ -39,9 +44,9 @@ const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 const provider2 = new FacebookAuthProvider();
 
-/*const functions = require('firebase-functions');
+/* const functions = require('firebase-functions');
 const admin = require('firebase-admin');
-admin.initializeApp();*/
+admin.initializeApp(); */
 
 export const signInFunct = (email, pass) => {
   createUserWithEmailAndPassword(auth, email, pass)
@@ -73,13 +78,28 @@ export const saveForm = (name, email, password) => {
   addDoc(collection(db, 'users'), { name, email, password });
 };
 
-export const savePost = ( Description, date, like) => {
-  onAuthStateChanged(auth,(users) => { 
-  const email = users.email;
-  const UID = users.uid;
-  const likes = [];
-  addDoc(collection(db, 'posts'), { email, Description, date, likes, UID});
-})
+export const savePost = (Description, date, like) => {
+  onAuthStateChanged(auth, (users) => {
+    const email = users.email;
+    const UID = users.uid;
+    const likes = [];
+    const objectId = Date.parse(new Date());
+    addDoc(collection(db, 'posts'), {
+      email, Description, date, likes, UID, objectId,
+    });
+  });
+};
+
+export const likeArray = (postId) => {
+  onAuthStateChanged(auth, async (users) => {
+    const userId = users.uid;
+    const postCollection = doc(db, 'posts', postId);
+    await updateDoc(postCollection, {
+      likes: arrayUnion(userId),
+    });
+
+    console.log(postCollection.likes);
+  });
 };
 
 // Crear cuenta con Google
@@ -134,7 +154,8 @@ export const loginInFunct = (email, password) => {
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       const user = userCredential.user;
-      console.log(user);
+      // console.log(user);
+      onNavigate('/timeLine');
     })
     .catch((error) => {
       const errorCode = error.code;
@@ -149,7 +170,7 @@ export const loginInFunct = (email, password) => {
         }
         if (tkn === 'auth/user-not-found') {
           console.log(
-            'Correo no registrado, crea una cuenta',
+            consoe.log('Correo no registrado, crea una cuenta'),
           );
         }
       };
@@ -168,26 +189,18 @@ export const logOutFunct = () => {
     .catch((error) => { console.log(error); });
 };
 
-/*export const dataCall = (callBackFn) => {
-  getDocs(collection(db, 'posts')).then((snapshot) =>   
-    callBackFn(snapshot.docs);
-    
-  });
-};*/
-
 onAuthStateChanged(auth, (user) => {
   if (user) {
-     const uid = user.uid;
+    const uid = user.uid;
   }
 });
 
-const data =collection(db, 'posts');
+const data = collection(db, 'posts');
 
 const w = query(data, orderBy('date', 'asc'));
 export const unsubscribe = (funct) => {
-        onSnapshot(w, (snapshot) => {
-          const changes = snapshot.docChanges();
-          funct(changes);
-      });
+  onSnapshot(w, (snapshot) => {
+    const changes = snapshot.docChanges();
+    funct(changes);
+  });
 };
-////Likes//

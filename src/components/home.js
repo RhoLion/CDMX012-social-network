@@ -115,7 +115,6 @@ export const Home = () => {
 
     if ((email != [] || password != []) && (password.length >= 6)) {
       loginInFunct(email, password);
-      onNavigate('/timeLine');
     } else {
       onNavigate('/');
       //  alert('correo o contraseña invalidos');

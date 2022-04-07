@@ -1,8 +1,11 @@
+// eslint-disable-next-line import/no-cycle
 import { Home } from './components/Home.js';
 // import { about } from './components/about.js';
 // eslint-disable-next-line import/no-cycle
 import { SignIn } from './components/SignIn.js';
+// eslint-disable-next-line import/no-cycle
 import { TimeLine } from './components/TimeLine.js';
+// eslint-disable-next-line import/no-cycle
 import { Profile } from './components/profile.js';
 
 const rootDiv = document.getElementById('root');

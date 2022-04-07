@@ -1,6 +1,8 @@
+/* eslint-disable no-undef */
 import { onNavigate } from '../app.js';
 import {
-  savePost, unsubscribe, likeArray,
+  savePost, unsubscribe, likeArray, deletePost, editP, dislike, userLikes,
+  totalLikes, currUser,
 } from '../firebase.js';
 
 export const TimeLine = () => {
@@ -61,50 +63,187 @@ export const TimeLine = () => {
   inputs.append(newPost, postButton);
 
   const setUpPost = (posts) => {
-    posts.forEach((change) => {
-      const articleContent = document.createElement('article');
-      articleContent.setAttribute('id', 'articleContent');
+    while (postContainer.firstChild) {
+      postContainer.removeChild(postContainer.firstChild);
+    }
 
-      const titleH3 = document.createElement('h3');
-      titleH3.append(change.doc.data().email);
+    posts.forEach((doc) => {
+      // console.log('foreache');
+      const likesUno = totalLikes(doc);
+      console.log(likesUno);
+      const idPost = (doc);
+      console.log(idPost);
+      if (doc) {
+        console.log('set_post_4each');
+        const articleContent = document.createElement('article');
+        articleContent.setAttribute('id', doc.id);
+        Object.assign(articleContent, {
+          classList: 'articleContent',
+        });
 
-      const postContent = document.createElement('p');
-      Object.assign(postContent, {
-        id: change.doc.data().objectId,
-        textContent: change.doc.data().Description,
-      });
-      const likeDiv = document.createElement('div');
-      likeDiv.setAttribute('id', 'likeDiv');
-      const likeB = document.createElement('img');
-      Object.assign(likeB, {
-        id: 'likeb',
-        type: 'button',
-        src: 'imagenes/paw.png',
-        className: 'likeB',
-      });
+        const titleH3 = document.createElement('h3');
+        titleH3.append(doc.email);
 
-      let liked = false;
-      const likes = change.doc.data().likes;
-      // console.log(likes);
-      const uids = change.doc.data().UID;
-      if (likes.includes(uids)) {
-        liked = true;
-      }
+        const eraseSection = document.createElement('section');
+        eraseSection.setAttribute('id', 'eraseSection');
+        const eraseBtn = document.createElement('img');
+        Object.assign(eraseBtn, {
+          id: 'editB',
+          type: 'button',
+          classList: 'patas',
+          src: 'imagenes/eraser.png',
+        });
 
-      likeB.addEventListener('click', (event) => {
-        if (likeB) {
-          event = change.doc.id;
-          // console.log(change.doc.id);
-          likeArray(event);
-          // console.log(likeArray);
-        } else {
+        const postContent = document.createElement('p');
+        Object.assign(postContent, {
+          id: doc.id,
+          textContent: doc.Description,
+        });
+
+        const likeContainer = document.createElement('div');
+        likeContainer.setAttribute('id', 'likeContainer');
+        const likeDiv = document.createElement('div');
+        likeDiv.setAttribute('id', 'likeDiv');
+        const likeB = document.createElement('img');
+        Object.assign(likeB, {
+          id: 'likeB',
+          type: 'button',
+          classList: 'patas',
+          src: 'imagenes/pataContorno.png',
+        });
+        const dislikeB = document.createElement('img');
+        Object.assign(dislikeB, {
+          id: 'dislikeB',
+          type: 'button',
+          classList: 'patas',
+          src: 'imagenes/paw colrd.png',
+        });
+        const likeCount = document.createElement('p');
+        Object.assign(likeCount, {
+          id: 'likeCount',
+          textContent: likesUno,
+        });
+
+        const editSection = document.createElement('section');
+        editSection.setAttribute('id', 'editSection');
+        const editB = document.createElement('img');
+        Object.assign(editB, {
+          id: 'editB',
+          type: 'button',
+          classList: 'patas',
+          src: 'imagenes/edit3.png',
+        });
+
+        // function delete
+
+        eraseBtn.addEventListener('click', () => {
+          console.log('click boton eliminar activado');
+
+          const warnSection = document.createElement('section');
+          warnSection.setAttribute('id', 'warnSection');
+          const warning = document.createElement('p');
+          Object.assign(warning, {
+            id: 'warning',
+            textContent: '¿Segurx que deseas eliminar esta publicación?',
+          });
+          const yesNo = document.createElement('section');
+          yesNo.setAttribute('id', 'yesNoSection');
+          const yesB = document.createElement('button');
+          Object.assign(yesB, {
+            id: 'yesB',
+            textContent: 'Eliminar',
+          });
+          const noB = document.createElement('button');
+          Object.assign(noB, {
+            id: 'noB',
+            textContent: 'Cancelar',
+          });
+          yesNo.append(yesB, noB);
+          warnSection.append(warning, yesNo);
+          articleContent.append(warnSection);
+          yesB.addEventListener('click', () => {
+            console.log('entr[o a borrar');
+            deletePost(doc.id);
+          });
+
+          noB.addEventListener('click', () => {
+            console.log('entro a cancel');
+            articleContent.removeChild(warnSection);
+          });
+          eraseBtn.addEventListener('click', () => {
+            articleContent.removeChild(warnSection);
+          });
+        });
+
+        // like function
+        likeB.addEventListener('click', () => {
+          if (likeB) {
+            likeArray(doc.id);
+          }
+        });
+
+        // dislike function
+        dislikeB.addEventListener('click', () => {
+          console.log('dislikeB');
+          dislike(doc.id);
+          postContainer.removeChild(articleContent);
+        });
+        likeDiv.append(likeB, likeCount);
+
+        const uids = doc.UID;
+
+        // ///////// USER AND ALREADY LIKED POSTS /////
+        const valid = userLikes(idPost);
+        console.log(valid);
+        const coincidence = valid.find((e) => e === currUser());
+        console.log(coincidence);
+
+        if (currUser() === coincidence) {
+          console.log('si esta P:' + coincidence);
+          likeDiv.removeChild(likeB);
+          likeDiv.appendChild(dislikeB);
+        } else if (currUser() !== coincidence) {
+          likeDiv.appendChild(likeB);
+          console.log('no esta');
         }
-        // console.log(event);
-      });
 
-      likeDiv.appendChild(likeB);
-      articleContent.append(titleH3, postContent, likeDiv);
-      postContainer.insertBefore(articleContent, postContainer.firstChild);
+        editB.addEventListener('click', () => {
+          if (editB) {
+            console.log('editB');
+            articleContent.removeChild(postContent);
+            const editConteiner = document.createElement('div');
+            editConteiner.setAttribute('id', 'editConteiner');
+            const editContent = document.createElement('input');
+            Object.assign(editContent, {
+              id: 'editContent',
+              type: 'text',
+              placeholder: doc.Description,
+            });
+            const saveEdit = document.createElement('button');
+            Object.assign(saveEdit, {
+              id: 'saveEdit',
+              value: 'guardar',
+              textContent: 'Guardar',
+            });
+            editConteiner.append(editContent, saveEdit);
+            articleContent.appendChild(editConteiner);
+
+            saveEdit.addEventListener('click', () => {
+              const edited = editContent.value;
+              console.log(edited);
+              articleContent.append(editConteiner);
+              editP(doc.id, edited);
+            // postContainer.removeChild(articleContent);
+            });
+          }
+        });
+
+        editSection.appendChild(editB);
+        eraseSection.appendChild(eraseBtn);
+        likeContainer.append(likeDiv, editSection, eraseSection);
+        articleContent.append(titleH3, postContent, likeContainer);
+        postContainer.insertBefore(articleContent, postContainer.firstChild);
+      }
     });
   };
 
@@ -113,7 +252,7 @@ export const TimeLine = () => {
 
   postButton.addEventListener('click', () => {
     if (newPost.value != []) {
-      savePost(newPost.value, new Date(), []);
+      savePost(newPost.value, new Date());
       newPost.value = '';
     } else {
       alert('No escribiste nada!');

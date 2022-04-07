@@ -3,7 +3,7 @@
 // eslint-disable-next-line import/no-cycle
 import { onNavigate } from '../app.js';
 import {
- loginInFunct, googleLogin, facebookLog 
+ loginInFunct, googleLogin, facebookLog,
 } from '../firebase.js';
 
 export const Home = () => {

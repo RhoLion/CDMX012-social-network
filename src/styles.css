@@ -1,6 +1,6 @@
 *{
     font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
-    margin: 0;
+    margin: auto;
     padding: 0;
     margin-top: 2%;
 }
@@ -78,7 +78,6 @@ h1{
     width: 5%;
     cursor: pointer;
     border: pink solid;
-    
 }
 #containerLogos{
     display: flex;
@@ -138,7 +137,6 @@ footer{
     height: 50%;
     width: 50%;
 }
-
 /* TIME LINE VIEW */
 #timeLineDive{
     display: flex;
@@ -165,23 +163,91 @@ header{
     height: 10%;
     width: 10%;
 }
-
 #postContainer{
     display: flex;
     flex-direction: column;
     margin-left: 10%;
     margin-right: 10%;
-    
+}
+#inputSection{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+#likeContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
 }
 #likeDiv{
     display: flex;
     justify-content: center;
+    align-self: center;
 }
-.likeB{
-    height: 10%;
-    width: 10%;
+#likeCount{
+    font-weight: bolder;
+    margin-right: 0;
 }
+.patas{
+    height: 30%;
+    width: 30%;
+}
+#editSection{
+    display: flex;
+    justify-content: space-evenly;
+}
+#dislikeB{
+    margin-left: 2%;    
+}
+#likeB{
+    margin-left: 2%;    
+}
+#editB{
+    
+}
+#editConteiner{
+    display: flex;
+    justify-content: center;
+    align-content: center;
 
+}
+#saveEdit{
+    display: flex;
+    background-color: #FF7C7C;
+    height: 20%;
+    width: 20%;
+    border-radius: 5px;
+    padding-top: 0%;
+    padding-bottom: 0%;
+    padding-left: 3%;
+    padding-right: 4%;
+    justify-content: center;
+}
+#eraseSection{
+    display: flex;
+    justify-content: space-evenly;
+}
+#warning{
+    border: solid, #FFBE48, 2px;
+    font-weight: bolder;
+    font-style: italic;
+}
+#yesNoSection{
+    display: flex;
+    justify-content: space-around;
+}
+#yesB{
+    border-radius: 5px;
+    background-color: #FF7C7C;
+    padding: 0 3% 0 3%;
+    margin-bottom: 1%;
+}
+#noB{
+    border-radius: 5px;
+    background-color: #FFBE48;
+    padding: 0 1% 0 1%;
+    margin-bottom: 1%;
+}
 #logOutAct{
     background-color: #FF7C7C;
     font-weight: bolder;
@@ -191,14 +257,12 @@ header{
     width:25%;
     /* padding:5%; */
 }
-
 #newPost{
     border: 2px solid #FFBE48;
     border-radius: 10px;
     margin-left: 8%;
-    margin-right: 20%;
+    margin-right: 8%;
 }
-
 #postButton{
     background-color: #FFBE48;
     border: transparent;
@@ -208,9 +272,7 @@ header{
     margin-right: 10%;
     margin-top: 2%;
     width: 30%;
-    
 }
-
 article{
     border: 2px solid #FFBE48;
     border-radius: 10px;
@@ -220,14 +282,12 @@ article{
     margin-bottom: 5%;
     /* padding: 2%; */
 }
-
 #logo_hex{
     display: flex;
     align-self: start;
     height: 20%;
     width: 20%;
 }
-
 #mainFooter{
     display: flex;
     justify-content: space-evenly;
@@ -245,5 +305,7 @@ article{
     height: 10%;
     width: 10%;
     align-self: center;
-    
+}
+#saveEdit{
+
 }

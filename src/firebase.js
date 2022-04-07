@@ -11,6 +11,8 @@ import {
   updateDoc,
   documentId,
   arrayUnion,
+  arrayRemove,
+  deleteDoc,
 
 } from 'https://www.gstatic.com/firebasejs/9.6.8/firebase-firestore.js';
 import {
@@ -25,8 +27,7 @@ import {
   FacebookAuthProvider,
 } from 'https://www.gstatic.com/firebasejs/9.6.8/firebase-auth.js';
 import { onNavigate } from './app.js';
-import { impresion } from './components/signIn.js';
-// import { async } from 'regenerator-runtime';
+// import { FieldValue } from 'firestore-jest-mock/mocks/fieldValue';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAiKKsrEJpCx8NgpvvcNp1dykxNjEyzqe0',
@@ -44,14 +45,11 @@ const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 const provider2 = new FacebookAuthProvider();
 
-/* const functions = require('firebase-functions');
-const admin = require('firebase-admin');
-admin.initializeApp(); */
-
 export const signInFunct = (email, pass) => {
   createUserWithEmailAndPassword(auth, email, pass)
     .then((userCredential) => {
-      const user = userCredential.user;
+      // eslint-disable-next-line no-unused-expressions
+      userCredential.user;
     })
     .catch((error) => {
       const errorCode = error.code;
@@ -64,9 +62,7 @@ export const signInFunct = (email, pass) => {
           alert('Tu contraseña debe contener al menos 6 carácteres.');
         }
         if (tkn === 'auth/email-already-in-use') {
-          alert(
-            'Ya existe una cuenta con este correo, intenta con uno nuevo o Inicia Sesión',
-          );
+          alert('Ya existe una cuenta con este correo, intenta con uno nuevo o Inicia Sesión');
         }
       };
       const resultado = errores(errorCode);
@@ -78,28 +74,78 @@ export const saveForm = (name, email, password) => {
   addDoc(collection(db, 'users'), { name, email, password });
 };
 
-export const savePost = (Description, date, like) => {
-  onAuthStateChanged(auth, (users) => {
+export const savePost = (Description, date) => {
+  const users = auth.currentUser;
+
+  if (users) {
     const email = users.email;
     const UID = users.uid;
     const likes = [];
-    const objectId = Date.parse(new Date());
+    // const objectId = Date.parse(new Date());
     addDoc(collection(db, 'posts'), {
-      email, Description, date, likes, UID, objectId,
+      email, Description, date, likes, UID,
     });
-  });
+    console.log('savepost');
+  }
 };
 
-export const likeArray = (postId) => {
-  onAuthStateChanged(auth, async (users) => {
+export const deletePost = async (postId) => {
+  const users = auth.currentUser;
+  if (users) {
+    const userId = users.uid;
+    const postCollection = doc(db, 'posts', postId);
+    await deleteDoc(postCollection);
+
+    console.log(postCollection);
+  }
+};
+
+export const likeArray = async (postId) => {
+  const users = auth.currentUser;
+
+  if (users) {
     const userId = users.uid;
     const postCollection = doc(db, 'posts', postId);
     await updateDoc(postCollection, {
       likes: arrayUnion(userId),
     });
+    console.log('likefunction');
+  }
+};
 
-    console.log(postCollection.likes);
-  });
+export const dislike = async (postId) => {
+  const users = auth.currentUser;
+  if (users) {
+    const userId = users.uid;
+    const postCollection = doc(db, 'posts', postId);
+    await updateDoc(postCollection, {
+      likes: arrayRemove(userId),
+    });
+  }
+};
+
+export const totalLikes = (post) => {
+  const allLikes = post.likes;
+  // const allLikes = post.likes;
+  console.log(allLikes);
+  return allLikes.length;
+};
+export const userLikes = (post) => {
+  // const Likes = doc.likes;
+  const likes = post.likes;
+  console.log(likes);
+  return likes;
+};
+
+// edit post
+export const editP = async (postId, postDesc) => {
+  const users = auth.currentUser;
+  if (users) {
+    const postColle = doc(db, 'posts', postId);
+    await updateDoc(postColle, {
+      Description: postDesc,
+    });
+  }
 };
 
 // Crear cuenta con Google
@@ -195,12 +241,49 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
-const data = collection(db, 'posts');
-
-const w = query(data, orderBy('date', 'asc'));
 export const unsubscribe = (funct) => {
-  onSnapshot(w, (snapshot) => {
-    const changes = snapshot.docChanges();
-    funct(changes);
+  const data = collection(db, 'posts');
+  const orderData = query(data, orderBy('date', 'asc'));
+  let postsArray = [];
+  onSnapshot(orderData, (snapshot) => {
+    postsArray = [];
+    console.log('start postsArray.size=' + postsArray.length);
+    console.log('snapshot.size=' + snapshot.size);
+    console.log('snapshot.docChanges().size=' + snapshot.docChanges().length);
+    snapshot.forEach((postDoc) => {
+      // either edit, update or delete
+      if (postDoc.metadata.hasPendingWrites) {
+        // objeto fue actualizado
+        if (postDoc.exists) {
+          // edit or create logic
+          console.log('edit or create logic '+ postDoc.id + "  "+ postDoc.data().Description)
+          console.log(postDoc.data());
+          postsArray.push({
+            id: postDoc.id,
+            ...postDoc.data(),
+          });
+        } else{
+          // delete logic
+          console.log('delete logic=' + postDoc.id + "  "+postDoc.data().Description);
+        }
+      } else {
+        // objeto no tiene cambios
+        console.log('objeto no tiene cambios='+ postDoc.id + "  " + postDoc.data().Description);
+        console.log(postDoc.data());
+        postsArray.push({
+          id: postDoc.id,
+          ...postDoc.data(),
+        });
+      }
+    });
+    console.log('END postsArray.size=' + postsArray.length);
+    funct(postsArray);
   });
+};
+
+export const currUser = () => {
+  const users = auth.currentUser;
+  if (users) {
+    return users.uid;
+  }
 };

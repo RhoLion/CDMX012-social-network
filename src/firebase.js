@@ -1,4 +1,4 @@
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.8/firebase-app.js';
+import { initializeApp } from './database/firebase-utils.js';
 import {
   getFirestore,
   collection,
@@ -14,7 +14,7 @@ import {
   arrayRemove,
   deleteDoc,
 
-} from 'https://www.gstatic.com/firebasejs/9.6.8/firebase-firestore.js';
+} from './database/firebase-utils.js';
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -25,7 +25,7 @@ import {
   getRedirectResult,
   signInWithRedirect,
   FacebookAuthProvider,
-} from 'https://www.gstatic.com/firebasejs/9.6.8/firebase-auth.js';
+} from './database/firebase-utils.js';
 import { onNavigate } from './app.js';
 // import { FieldValue } from 'firestore-jest-mock/mocks/fieldValue';
 
@@ -56,13 +56,13 @@ export const signInFunct = (email, pass) => {
       const errorMessage = error.message;
       const errores = (tkn) => {
         if (tkn === 'auth/invalid-email') {
-          alert('Por favor ingresa un correo válido');
+          // alert('Por favor ingresa un correo válido');
         }
         if (tkn === 'auth/weak-password') {
-          alert('Tu contraseña debe contener al menos 6 carácteres.');
+          // alert('Tu contraseña debe contener al menos 6 carácteres.');
         }
         if (tkn === 'auth/email-already-in-use') {
-          alert('Ya existe una cuenta con este correo, intenta con uno nuevo o Inicia Sesión');
+          // alert('Ya existe una cuenta con este correo, intenta con uno nuevo o Inicia Sesión');
         }
       };
       const resultado = errores(errorCode);

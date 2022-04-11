@@ -1,4 +1,6 @@
+// eslint-disable-next-line import/no-cycle
 import { onNavigate } from '../app.js';
+// eslint-disable-next-line import/no-cycle
 import { logOutFunct } from '../firebase.js';
 
 export const Profile = () => {

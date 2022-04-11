@@ -1,25 +1,11 @@
 // eslint-disable-next-line import/no-cycle
-import { Home } from './components/Home.js';
-// import { about } from './components/about.js';
-// eslint-disable-next-line import/no-cycle
-import { SignIn } from './components/SignIn.js';
-// eslint-disable-next-line import/no-cycle
-import { TimeLine } from './components/TimeLine.js';
-// eslint-disable-next-line import/no-cycle
-import { Profile } from './components/profile.js';
-
-const rootDiv = document.getElementById('root');
-const routes = {
-  '/': Home,
-  '/signIn': SignIn,
-  '/timeLine': TimeLine,
-  '/profile': Profile,
-};
+import { rootDiv, routes, component } from './constant.js';
 
 export const onNavigate = (pathname) => {
   while (rootDiv.firstChild) {
     rootDiv.removeChild(rootDiv.firstChild);
   }
+  console.log('here');
   window.history.pushState(
     {},
     pathname,
@@ -28,8 +14,6 @@ export const onNavigate = (pathname) => {
   rootDiv.appendChild(routes[pathname]());
 };
 
-const component = routes[window.location.pathname];
-
 window.onpopstate = () => {
   while (rootDiv.firstChild) {
     rootDiv.removeChild(rootDiv.firstChild);
@@ -37,4 +21,12 @@ window.onpopstate = () => {
   rootDiv.appendChild(routes[window.location.pathname]());
 };
 
-rootDiv.appendChild(component());
+//rootDiv.appendChild(component());
+
+export const init = () => {
+  rootDiv.appendChild(component());
+};
+
+window.onload = () => {
+  init();
+};

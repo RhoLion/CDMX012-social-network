@@ -68,13 +68,9 @@ export const TimeLine = () => {
     }
 
     posts.forEach((doc) => {
-      // console.log('foreache');
       const likesUno = totalLikes(doc);
-      console.log(likesUno);
       const idPost = (doc);
-      console.log(idPost);
       if (doc) {
-        console.log('set_post_4each');
         const articleContent = document.createElement('article');
         articleContent.setAttribute('id', doc.id);
         Object.assign(articleContent, {
@@ -137,8 +133,6 @@ export const TimeLine = () => {
         // function delete
 
         eraseBtn.addEventListener('click', () => {
-          console.log('click boton eliminar activado');
-
           const warnSection = document.createElement('section');
           warnSection.setAttribute('id', 'warnSection');
           const warning = document.createElement('p');
@@ -162,12 +156,10 @@ export const TimeLine = () => {
           warnSection.append(warning, yesNo);
           articleContent.append(warnSection);
           yesB.addEventListener('click', () => {
-            console.log('entr[o a borrar');
             deletePost(doc.id);
           });
 
           noB.addEventListener('click', () => {
-            console.log('entro a cancel');
             articleContent.removeChild(warnSection);
           });
           eraseBtn.addEventListener('click', () => {
@@ -184,7 +176,6 @@ export const TimeLine = () => {
 
         // dislike function
         dislikeB.addEventListener('click', () => {
-          console.log('dislikeB');
           dislike(doc.id);
           postContainer.removeChild(articleContent);
         });
@@ -194,22 +185,17 @@ export const TimeLine = () => {
 
         // ///////// USER AND ALREADY LIKED POSTS /////
         const valid = userLikes(idPost);
-        console.log(valid);
         const coincidence = valid.find((e) => e === currUser());
-        console.log(coincidence);
 
         if (currUser() === coincidence) {
-          console.log('si esta P:' + coincidence);
           likeDiv.removeChild(likeB);
           likeDiv.appendChild(dislikeB);
         } else if (currUser() !== coincidence) {
           likeDiv.appendChild(likeB);
-          console.log('no esta');
         }
 
         editB.addEventListener('click', () => {
           if (editB) {
-            console.log('editB');
             articleContent.removeChild(postContent);
             const editConteiner = document.createElement('div');
             editConteiner.setAttribute('id', 'editConteiner');
@@ -233,7 +219,6 @@ export const TimeLine = () => {
               console.log(edited);
               articleContent.append(editConteiner);
               editP(doc.id, edited);
-            // postContainer.removeChild(articleContent);
             });
           }
         });
@@ -251,7 +236,7 @@ export const TimeLine = () => {
   wraper.append(inputs, postContainer);
 
   postButton.addEventListener('click', () => {
-    if (newPost.value != []) {
+    if (newPost.value !== []) {
       savePost(newPost.value, new Date());
       newPost.value = '';
     } else {

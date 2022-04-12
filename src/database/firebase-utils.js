@@ -28,6 +28,7 @@ import {
   getRedirectResult,
   signInWithRedirect,
   FacebookAuthProvider,
+  signInWithPopup,
 } from 'https://www.gstatic.com/firebasejs/9.6.8/firebase-auth.js';
 
 export { initializeApp };
@@ -58,4 +59,5 @@ export {
   getRedirectResult,
   signInWithRedirect,
   FacebookAuthProvider,
+  signInWithPopup,
 };

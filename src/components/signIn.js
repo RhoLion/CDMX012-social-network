@@ -101,14 +101,7 @@ export const SignIn = () => {
 
 export const impresion = (tkn) => {
   tkn.forEach((error) => {
-    console.log(error);
-    // const errorLine = document.createElement('p');
-    // Object.assign(errorLine, {
-    //   id: 'errorLine',
-    //   textContent: error,
-    // });
-    // console.log(errorLine);
+    // eslint-disable-next-line no-alert
+    alert(error);
   });
 };
-  // FALTA OPCION PARA RESETEAR FORMULARIO !!!! ////
-// export const signIn =

@@ -7,7 +7,6 @@ import {
 } from '../firebase.js';
 
 export const Home = () => {
-  // const homeLogo = document.createElement('header');
   const headerImg = document.createElement('img');
   headerImg.src = 'imagenes/logo_large.png';
   document.body.appendChild(headerImg);
@@ -68,7 +67,6 @@ export const Home = () => {
   Object.assign(googleBtnLogin, {
     id: 'googleLogin',
     type: 'button',
-    // textContent: 'Crear cuenta',
     class: 'btn btn-secondary btn-block',
     src: 'imagenes/google_logo.png',
   });
@@ -78,7 +76,6 @@ export const Home = () => {
   Object.assign(fbBtnLogin, {
     id: 'facebookLogin',
     type: 'button',
-    // textContent: 'Crear cuenta',
     class: 'btn btn-secondary btn-block',
     src: 'imagenes/fb_logo3.png',
   });
@@ -96,34 +93,20 @@ export const Home = () => {
   footer.setAttribute('id', 'footr');
   footer.textContent = 'CopyRight @Ale, Ro y Sui';
   loginInputs.append(emailInput, passInput, showPass, submitAction, footer);
-  // fbBtnLogin.textContent = 'Iniciar Sesión con Facebook';
 
   submitAction.addEventListener('click', (e) => {
     e.preventDefault();
 
     const email = document.querySelector('#log_email').value;
     const password = document.querySelector('#log_password').value;
-    // loginInFunct(email, password);
-    // onNavigate('/timeLine');
 
-    // if(email existe en doc.user.email){
-      // if(password == doc.user.pass del mismo email){
-        // llevar a /timeline
-    //}
-    // alert ('correo no registrado, contra invalida')
-    //} hacer fun impresion  (token) => {}
-
-    if ((email != [] || password != []) && (password.length >= 6)) {
+    if ((email !== [] || password !== []) && (password.length >= 6)) {
       loginInFunct(email, password);
     } else {
       onNavigate('/');
-      //  alert('correo o contraseña invalidos');
     }
   });
 
-  // submitAction.addEventListener('click', () => {
-  //   onNavigate('/timeLine');
-  // });
   createAcc.addEventListener('click', () => {
     onNavigate('/signIn');
   });
@@ -146,8 +129,3 @@ export const Home = () => {
   );
   return HomeDiv;
 };
-
-// revisar si está loggeada,mostrar timeline, else manda login
-// hacer de home y todas las js una function
-
-// tag for img is 'figure'

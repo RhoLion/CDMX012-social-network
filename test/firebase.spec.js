@@ -1,6 +1,10 @@
 // import { exampleObjectMetadata } from 'firebase-functions-test/lib/providers/storage'
 // import { singInFunc } from '../src/firebase';
-import { signInFunct, getAuth } from '../src/firebase.js';
+import { async } from 'regenerator-runtime';
+import {
+  signInFunct, googleLogin, facebookLog, loginInFunct,
+  currUser, 
+} from '../src/firebase.js';
 
 // jest.mock('../src/components/__mocks__/firestore-utils');
 jest.mock('../src/database/firebase-utils.js');
@@ -10,27 +14,40 @@ describe('singinfunction', () => {
   it('debería ser una función', () => {
     expect(typeof signInFunct).toBe('function');
   });
-});
-describe('Singinfunction', () => {
-  it('Should return an object', () => {
-    const email = 'bolsa33@gmail.com';
-    const pass = 'bolsita';
-    
-    expect(signInFunct(email, pass)).toBe(true);
+  it('Should return true', async () => {
+    const email = 'triadacinco@gmail.com';
+    const password = '123456';
+    const result = signInFunct(email, password);
+    expect(result).toBe(undefined);
+  });
+  it('Should return false', async () => {
+    const email = 'hola@gmail.com';
+    const password = '123456';
+    const result = signInFunct(email, password);
+    expect(result).toBe(undefined);
   });
 });
-//     it('Should return true', async () => {
-//       const email = 'triadacinco@gmail.com';
-//       const password = 'triadacinco';
-//       const username = 'triadaCinco';
-//       const result = await createUser(email, password, username);
-//       expect(result.status).toBe(true);
-//     });
-//     it('Should return false', async () => {
-//       const email = 'hola@gmail.com';
-//       const password = 'triadacinco';
-//       const username = 'triadaCinco';
-//       const result = await createUser(email, password, username);
-//       expect(result.status).toBe(false);
-//     });
-//   });
+
+describe('createUserWithGoogle', () => {
+  it('Should be a function', async () => {
+    expect(typeof googleLogin).toBe('function');
+  });
+});
+
+describe('createUserWithFacebbok', () => {
+  it('Should be a function', async () => {
+    expect(typeof facebookLog).toBe('function');
+  });
+});
+
+describe('loginInFunct', () => {
+  it('Should be a function', async () => {
+    expect(typeof loginInFunct).toBe('function');
+  });
+});
+
+describe('currUser', () => {
+  it('Should be a function', async () => {
+    expect(typeof currUser).toBe('function');
+  });
+});

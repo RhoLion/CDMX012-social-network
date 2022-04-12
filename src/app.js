@@ -5,7 +5,6 @@ export const onNavigate = (pathname) => {
   while (rootDiv.firstChild) {
     rootDiv.removeChild(rootDiv.firstChild);
   }
-  console.log('here');
   window.history.pushState(
     {},
     pathname,
@@ -20,8 +19,6 @@ window.onpopstate = () => {
   }
   rootDiv.appendChild(routes[window.location.pathname]());
 };
-
-//rootDiv.appendChild(component());
 
 export const init = () => {
   rootDiv.appendChild(component());

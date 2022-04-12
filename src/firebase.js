@@ -25,6 +25,7 @@ import {
   getRedirectResult,
   signInWithRedirect,
   FacebookAuthProvider,
+  signInWithPopup,
 } from './database/firebase-utils.js';
 import { onNavigate } from './app.js';
 // import { FieldValue } from 'firestore-jest-mock/mocks/fieldValue';
@@ -53,7 +54,7 @@ export const signInFunct = (email, pass) => {
     })
     .catch((error) => {
       const errorCode = error.code;
-      const errorMessage = error.message;
+      // const errorMessage = error.message;
       const errores = (tkn) => {
         if (tkn === 'auth/invalid-email') {
           // alert('Por favor ingresa un correo válido');
@@ -85,7 +86,6 @@ export const savePost = (Description, date) => {
     addDoc(collection(db, 'posts'), {
       email, Description, date, likes, UID,
     });
-    console.log('savepost');
   }
 };
 
@@ -95,8 +95,6 @@ export const deletePost = async (postId) => {
     const userId = users.uid;
     const postCollection = doc(db, 'posts', postId);
     await deleteDoc(postCollection);
-
-    console.log(postCollection);
   }
 };
 
@@ -109,7 +107,6 @@ export const likeArray = async (postId) => {
     await updateDoc(postCollection, {
       likes: arrayUnion(userId),
     });
-    console.log('likefunction');
   }
 };
 
@@ -127,13 +124,11 @@ export const dislike = async (postId) => {
 export const totalLikes = (post) => {
   const allLikes = post.likes;
   // const allLikes = post.likes;
-  console.log(allLikes);
   return allLikes.length;
 };
 export const userLikes = (post) => {
   // const Likes = doc.likes;
   const likes = post.likes;
-  console.log(likes);
   return likes;
 };
 
@@ -149,16 +144,58 @@ export const editP = async (postId, postDesc) => {
 };
 
 // Crear cuenta con Google
+// export const googleLogin = () => {
+//   signInWithRedirect(auth, provider);
+//   getRedirectResult(auth)
+//     .then((result) => {
+//       // This gives you a Google Access Token. You can use it to access Google APIs.
+//       const credential = GoogleAuthProvider.credentialFromResult(result);
+//       const token = credential.accessToken;
+//       // The signed-in user info.
+//       const user = result.user;
+//     })
+//     .catch((error) => {
+//       // Handle Errors here.
+//       const errorCode = error.code;
+//       const errorMessage = error.message;
+//       // // The email of the user's account used.
+//       const email = error.email;
+//     });
+// };
+// export const googleLogin = () => {
+//   signInWithRedirect(auth, provider);
+//   onNavigate('/timeLine');
+//   getRedirectResult(auth)
+
+//     .then((result) => {
+//       // This gives you a Google Access Token. You can use it to access Google APIs.
+//       const credential = GoogleAuthProvider.credentialFromResult(result);
+//       const token = credential.accessToken;
+//       // The signed-in user info.
+//       const users = result.user;
+//     })
+//     .catch((error) => {
+//       // Handle Errors here.
+//       const errorCode = error.code;
+//       const errorMessage = error.message;
+//       // The email of the user's account used.
+//       const email = error.email;
+//       // The AuthCredential type that was used.
+//       const credential = GoogleAuthProvider.credentialFromError(error);
+//       // ...
+//     });
+// };
+
 export const googleLogin = () => {
-  signInWithRedirect(auth, provider);
-  getRedirectResult(auth)
+  const provider = new GoogleAuthProvider();
+  signInWithPopup(auth, provider)
     .then((result) => {
       // This gives you a Google Access Token. You can use it to access Google APIs.
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const token = credential.accessToken;
       // The signed-in user info.
-      const user = result.user;
-      console.log('funciona?');
+      const users = result.user;
+      onNavigate('/timeLine');
     })
     .catch((error) => {
       // Handle Errors here.
@@ -168,7 +205,6 @@ export const googleLogin = () => {
       const email = error.email;
       // The AuthCredential type that was used.
       const credential = GoogleAuthProvider.credentialFromError(error);
-      // ...
     });
 };
 
@@ -200,39 +236,32 @@ export const loginInFunct = (email, password) => {
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       const user = userCredential.user;
-      // console.log(user);
       onNavigate('/timeLine');
     })
     .catch((error) => {
       const errorCode = error.code;
-      console.log(errorCode);
       const errorMessage = error.message;
       const errores = (tkn) => {
         if (tkn === 'auth/invalid-email') {
-          console.log('Por favor ingresa un correo válido');
+          alert('Por favor ingresa un correo válido');
         }
         if (tkn === 'auth/wrong-password') {
-          console.log('Tu contraseña es incorrecta');
+          alert('Tu contraseña es incorrecta');
         }
         if (tkn === 'auth/user-not-found') {
-          console.log(
-            consoe.log('Correo no registrado, crea una cuenta'),
-          );
+          alert('Correo no registrado, crea una cuenta');
         }
       };
       errores(errorCode);
-      // console.log(typeof mensaje);
-      // impresion(mensaje);
     });
 };
-// crear fun para errores (traducciones)
+
 // Función cerrar sesión
 export const logOutFunct = () => {
   signOut(auth)
     .then(() => {
-      console.log('deslogueado');
     })
-    .catch((error) => { console.log(error); });
+    .catch((error) => { alert(error); });
 };
 
 onAuthStateChanged(auth, (user) => {
@@ -247,36 +276,25 @@ export const unsubscribe = (funct) => {
   let postsArray = [];
   onSnapshot(orderData, (snapshot) => {
     postsArray = [];
-    console.log('start postsArray.size=' + postsArray.length);
-    console.log('snapshot.size=' + snapshot.size);
-    console.log('snapshot.docChanges().size=' + snapshot.docChanges().length);
     snapshot.forEach((postDoc) => {
       // either edit, update or delete
       if (postDoc.metadata.hasPendingWrites) {
         // objeto fue actualizado
         if (postDoc.exists) {
-          // edit or create logic
-          console.log('edit or create logic '+ postDoc.id + "  "+ postDoc.data().Description)
-          console.log(postDoc.data());
           postsArray.push({
             id: postDoc.id,
             ...postDoc.data(),
           });
         } else{
           // delete logic
-          console.log('delete logic=' + postDoc.id + "  "+postDoc.data().Description);
         }
       } else {
-        // objeto no tiene cambios
-        console.log('objeto no tiene cambios='+ postDoc.id + "  " + postDoc.data().Description);
-        console.log(postDoc.data());
         postsArray.push({
           id: postDoc.id,
           ...postDoc.data(),
         });
       }
     });
-    console.log('END postsArray.size=' + postsArray.length);
     funct(postsArray);
   });
 };

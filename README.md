@@ -54,6 +54,8 @@ Con base en la investigación realizada y las interacciones con los usuarixs dis
 
 ![Vista de la página principal de la Red Social I Care Pets](/src/imagenes/vistaprincipal.jpeg)
 
+![Vista Crear cuenta en La Red Social I Care Pets](/src/imagenes/crearcuenta.jpeg)
+
 ![Vista del muro de la Red Social I Care Pets](/src/imagenes/vistamuro.jpeg)
 
 

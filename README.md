@@ -23,18 +23,18 @@ Por ello es que con I Care Pets, intentamos crear una red de apoyo, para que los
 ## 2. Conociendo al usuarix
 Este proyecto fue pensado para amantes de las mascotas, y para lograr tener un contenido relevante para nuestros usuarixs, nos dimos a la tarea de investigar acerca de sus intereses y opiniones, para esto desarrollamos un cuestionario que nos dio la posibilidad de conocer qué le gustaría ver en nuestra interfaz y qué información es importante para ella/él. A continuación mostramos los resultados obtenidos del cuestionario:
 
-![Cuestionario](/src/imgagenes/cuestionario1.png)
+![Cuestionario](/src/imgagenes/cuestionario1.jpeg)
 
-![Cuestionario](/src/imgagenes/cuestionario2.png)
+![Cuestionario](/src/imgagenes/cuestionario2.jpeg)
 
-![Cuestionario](/src/imagenes/cuestionario3.png)
+![Cuestionario](/src/imagenes/cuestionario3.jpeg)
 
 ## 3. Diseño de la interfaz del usuarix
 
 Tomando en cuenta las opiniones e intereses de los usuarixs, en esta app podrán publicar a detalle lo que necesitas, es decir las fechas que estarás fuera y las características de tu mascota (raza, alimentación, adaptabilidad etcétera), con la finalidad de que otro usuarix pueda responder al llamado.
 Es por ello que el diseño de la interfaz se visualizará de la siguiente manera:
 
-![Diseño de la interfaz del usuarix](/src/imagenes/vistafigma.jpg)
+![Diseño de la interfaz del usuarix](/src/imagenes/vistafigma.jpeg)
 
 ## 4. Historias de usuarixs
 

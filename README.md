@@ -23,9 +23,9 @@ Por ello es que con I Care Pets, intentamos crear una red de apoyo, para que los
 ## 2. Conociendo al usuarix
 Este proyecto fue pensado para amantes de las mascotas, y para lograr tener un contenido relevante para nuestros usuarixs, nos dimos a la tarea de investigar acerca de sus intereses y opiniones, para esto desarrollamos un cuestionario que nos dio la posibilidad de conocer qué le gustaría ver en nuestra interfaz y qué información es importante para ella/él. A continuación mostramos los resultados obtenidos del cuestionario:
 
-![Cuestionario](/src/imgagenes/cuestionario1.jpeg)
+![Cuestionario](/src/imagenes/cuestionario1.jpeg)
 
-![Cuestionario](/src/imgagenes/cuestionario2.jpeg)
+![Cuestionario](/src/imagenes/cuestionario2.jpeg)
 
 ![Cuestionario](/src/imagenes/cuestionario3.jpeg)
 

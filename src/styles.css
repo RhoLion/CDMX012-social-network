@@ -168,6 +168,7 @@ header{
     flex-direction: column;
     margin-left: 10%;
     margin-right: 10%;
+  
 }
 #inputSection{
     display: flex;
@@ -308,4 +309,118 @@ article{
 }
 #saveEdit{
 
+}
+
+@media screen and (min-width: 1200px) {
+
+
+      #full_logo{
+        display: flex;
+        /* margin-top: 8%;
+        margin-bottom: 2%; */
+        /* height: 25%; */
+        width: 25%;
+    }
+
+    #container1{
+        display: flex;
+        /* border: 1px solid rgb(26, 24, 24); */
+        flex-direction: column;
+        align-content: center;
+        align-items: center;
+        justify-content: center;
+        /* row-gap: 10px; */
+        /* margin: 20%; */
+    }
+
+    #containerLogos{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        width: 70%;
+    }
+
+
+    #login{
+        width: 50%;
+        height: 30%;
+    }
+
+#welcomeText{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 35%;
+    margin-left: 35%;
+    margin-top: 0cm;
+    margin-bottom: 35%;
+    border-color: rebeccapurple;
+}
+
+#root{
+    margin: auto;
+}
+
+#subcontainer{
+    display: inline-block;
+    position: relative;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: auto;
+}
+
+#tlHeader{
+    display: flex;
+    flex-direction: row;
+    /* margin-top: 3%; */
+    justify-content: space-around;
+    align-items: space-around;
+    width: 35%;
+    height: auto;
+}
+
+#inputSection{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 53%;
+}
+
+#postContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 25%;
+    margin-right: 10%;
+    width: 50%;
+}
+
+#likeContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 50%;
+}
+
+#mainFooter{
+    display: flex;
+     width: 25%;
+    margin-left: 37%;
+    position: static;
+    background-color: transparent;
+}
+
+#welcomeText2{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    align-items: center;
+    background-repeat: repeat;
+    background-position: center;
+    background-size: flex-end, flex-end;
+    width: 50%;
+}
 }

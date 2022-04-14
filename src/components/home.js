@@ -89,10 +89,10 @@ export const Home = () => {
   });
   document.body.appendChild(createAcc);
   logosAndCreate.append(logos, createAcc);
-  const footer = document.createElement('footer');
-  footer.setAttribute('id', 'footr');
-  footer.textContent = 'CopyRight @Ale, Ro y Sui';
-  loginInputs.append(emailInput, passInput, showPass, submitAction, footer);
+  // const footer = document.createElement('footer');
+  // footer.setAttribute('id', 'footr');
+  // footer.textContent = 'CopyRight @Ale, Ro y Sui';
+  loginInputs.append(emailInput, passInput, showPass, submitAction);
 
   submitAction.addEventListener('click', (e) => {
     e.preventDefault();
